@@ -43,7 +43,7 @@ subreddit = reddit.subreddit(subreddit_name)
 posts = []
 
 # Redditから投稿をanalysis
-for post in subreddit.hot(limit=1000):
+for post in subreddit.hot(limit=10000):
     clean_title = post.title
     sia = SentimentIntensityAnalyzer()
     score = sia.polarity_scores(clean_title)
