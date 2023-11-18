@@ -1,28 +1,9 @@
-import re
-
 import pandas as pd
 import praw
-from nltk.corpus import stopwords
-from nltk.stem import SnowballStemmer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics import classification_report
 from sklearn.model_selection import train_test_split
 from sklearn.svm import SVC
-
-# データの前処理
-stemmer = SnowballStemmer('english')
-stop_words = set(stopwords.words('english'))
-
-
-def clean_text(text):
-    # Remove URL、特殊文字
-    text = re.sub(r'http\S+', '', text)
-    text = re.sub(r'\W', ' ', text)
-    text = text.lower()
-    text = ' '.join([word for word in text.split() if word not in stop_words])
-    text = ' '.join([stemmer.stem(word) for word in text.split()])
-    return text
-
 
 df = pd.read_csv('reddit_posts.csv')
 
@@ -43,9 +24,9 @@ model.fit(X_train, Y_train)
 predictions = model.predict(X_test)
 print(classification_report(Y_test, predictions, zero_division=0))
 
-list = ['I like you.', 'I hate you.', 'I am a student.']
+lists = ['I like you.', 'I hate you.', 'I am a student.']
 
-for text in list:
+for text in lists:
     sample_vector = tfidf.transform([text])
     prediction = model.predict(sample_vector)
 

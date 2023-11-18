@@ -4,41 +4,58 @@ import stanza
 from flair.models import TextClassifier
 from nltk.sentiment import SentimentIntensityAnalyzer
 from textblob import TextBlob
+from nltk.corpus import stopwords
+from nltk.stem import SnowballStemmer
+import re
 
-# 感情分析モデルのロード
-# classifier = TextClassifier.load('en-sentiment')
-
-# # Stanzaの英語モデルをダウンロード
-# stanza.download('en')
+# # データの前処理
+# stemmer = SnowballStemmer('english')
+# stop_words = set(stopwords.words('english'))
 #
-# # NLPパイプラインの初期化
-# nlp = stanza.Pipeline(lang='en')
+#
+# def clean_text(text):
+#     # Remove URL、特殊文字
+#     text = re.sub(r'http\S+', '', text)
+#     text = re.sub(r'\W', ' ', text)
+#     text = text.lower()
+#     text = ' '.join([word for word in text.split() if word not in stop_words])
+#     text = ' '.join([stemmer.stem(word) for word in text.split()])
+#     return text
+
 
 # Auth Reddit API
-client_id = 'your client id'
-client_secret = 'your secret'
+# client_id = 'your client id'
+# client_secret = 'your secret'
+# user_agent = 'SampleNLP'
+# user_id = 'your id'
+# password = 'your password'
+
+
+client_id = 'jpw5HiTCISzvisJvAi-4cA'
+client_secret = 'ptEspyyElx1O59GPs44ur_Pun-58KA'
 user_agent = 'SampleNLP'
-user_id = 'your id'
-password = 'your password'
+user_id = 'buno15'
+password = 'murakikiKI1543'
 
 # PRAW options
 reddit = praw.Reddit(client_id=client_id, client_secret=client_secret, user_agent=user_agent, user_id=user_id,
                      password=password)
 
 # データ収集対象のサブレディットを指定
-subreddit_name = 'all'  # 例としてPythonサブレディットを使用
+subreddit_name = 'all'
 
 # サブレディットからホット投稿を取得
 subreddit = reddit.subreddit(subreddit_name)
 posts = []
 
-# Redditから投稿を収集
+# Redditから投稿をanalysis
 for post in subreddit.hot(limit=1000):
+    clean_title = post.title
     sia = SentimentIntensityAnalyzer()
-    score = sia.polarity_scores(post.title)
+    score = sia.polarity_scores(clean_title)
     sentimentNLTK = score['compound']
 
-    analysis = TextBlob(post.title)
+    analysis = TextBlob(clean_title)
     sentimentBlob = analysis.sentiment.polarity
 
     # doc = nlp(post.title)
@@ -63,10 +80,10 @@ for post in subreddit.hot(limit=1000):
     #
     # sentimentFlair *= confidence
 
-    posts.append([post.title, sentimentNLTK, sentimentBlob])
+    posts.append([clean_title, sentimentNLTK, sentimentBlob])
 
-# DataFrameに変換
+# Convert DataFrame
 posts_df = pd.DataFrame(posts, columns=['title', 'sentimentNLTK', 'sentimentBlob'])
 
-# データフレームをCSVファイルに保存
+# output csv
 posts_df.to_csv('reddit_posts.csv', index=False)
