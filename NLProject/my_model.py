@@ -24,14 +24,6 @@ model.fit(X_train, Y_train)
 predictions = model.predict(X_test)
 print(classification_report(Y_test, predictions, zero_division=0))
 
-lists = ['I like you.', 'I hate you.', 'I am a student.']
-
-for text in lists:
-    sample_vector = tfidf.transform([text])
-    prediction = model.predict(sample_vector)
-
-    print("Predicted Sentiment: \"" + text + "\" :", prediction[0])
-
 # print("\n---Reddit Posts---")
 #
 # # PRAW options
