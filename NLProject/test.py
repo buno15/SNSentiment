@@ -7,3 +7,10 @@ for text in lists:
     prediction = my_model.model.predict(sample_vector)
 
     print("Predicted Sentiment: \"" + text + "\" :", prediction[0])
+
+    probabilities = my_model.model.predict_proba(sample_vector)
+    predicted_class_index = list(my_model.model.classes_).index(prediction[0])
+    predicted_class_probability = probabilities[0][predicted_class_index]
+    print(f'Probability: {predicted_class_probability:.4f}')
+    accuracy = my_model.model.score(my_model.X_test, my_model.Y_test)
+    print(f'Model Accuracy: {accuracy:.4f}')

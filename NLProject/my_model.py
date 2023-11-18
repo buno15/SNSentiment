@@ -17,7 +17,7 @@ Y = df['average_score'].apply(lambda x: 'neutral' if x == 0 else ('positive' if 
 X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2)
 
 # Training model
-model = SVC(kernel='linear')
+model = SVC(kernel='linear', probability=True)
 model.fit(X_train, Y_train)
 
 # モデルの評価
