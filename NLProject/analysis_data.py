@@ -31,6 +31,8 @@ import re
 # password = 'your password'
 
 
+
+
 # PRAW options
 reddit = praw.Reddit(client_id=client_id, client_secret=client_secret, user_agent=user_agent, user_id=user_id,
                      password=password)
