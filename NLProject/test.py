@@ -13,4 +13,4 @@ for text in lists:
     predicted_class_probability = probabilities[0][predicted_class_index]
     print(f'Probability: {predicted_class_probability:.4f}')
     accuracy = my_model.model.score(my_model.X_test, my_model.Y_test)
-    print(f'Model Accuracy: {accuracy:.4f}')
+    print(f'Model Accuracy: {accuracy:.4f}\n')
